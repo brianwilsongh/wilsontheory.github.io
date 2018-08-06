@@ -187,9 +187,9 @@ json time to completion (ms): 728
 protobuf cumulatively faster by : 655ms, ratio: 9.972603
 ```
 
-Naturally, there's variance with the timing each time you run the program, but I've generally seen ratios in the range of 6-11 implying that Protobuf serialization/deserialization can regularly outperform JSON by a factor of 10 without factoring in network latency. But factoring in the decreased size of the Protobuf object, it makes sense that it would move significantly faster over the wire compared to a JSON object. 
+Naturally, there's variance with the timing each time you run the program, but I've generally seen ratios in the range of 6-11 implying that Protobuf serialization/deserialization can regularly outperform JSON by a factor of 10 without factoring in network latency. But factoring in the decreased size of the Protobuf object, it makes sense that it would move significantly faster over the wire compared to a JSON object anyway. The only question then (and this is probably going to be a topic of Round Two) is what kind of relative speed advantage we'd see in a more holistic test case.
 
-The conclusion is that in this very specific setup, Protobuf is better at least in terms of performance. But here are some reasons it might not be worth it:
+But the conclusion for this very specific setup is pretty simple. It appears that Protobuf is better, at least in terms of runtime performance. But here are some reasons it might not be worth it to utilize this technology in a production codebase:
 
 * your API services are fast enough
 * the bottleneck to the performance of your APIs lies elsewhere in the code
@@ -197,6 +197,8 @@ The conclusion is that in this very specific setup, Protobuf is better at least 
 * you have automated components of your system that utilize JSON format
 * you have JSON validation that would be difficult to refactor
 * you use MEAN stack and enjoy the convenience of having JavaScript everywhere
+* JSON is more battle-tested, and easier to debug due to wealth of resources
+* Unknown potential issues with Protobuf
 
 In general, I'm impressed with Protobuf and find it a very interesting alternative to XML and JSON. When I have some more time I plan to test the relative performance of this serialization format with larger objects, to find an accurate way to include network latency into the test, and to include XML in these benchmark tests as well.
 
