@@ -1,19 +1,19 @@
 ---
 layout: post
-title:  "JSON vs Protobuf"
+title:  "JSON versus Protobuf, Round One"
 date:   2018-08-05 15:40:56
 categories: protobuf
 ---
 
-Today I'll discuss some things I've learned about Protobuf as a new user of the technology, and how it might stack up to JSON (JavaScript Object Notation) in certain scenarios. My interest in this topic began at work, when I began to brainstorm methods to speed up a Java backend service that responds in JSON to transfer data to other business units. While I also have interest in the security implications of switching to Protobuf, the focus of this particular post will be on performance.
+Today I'll discuss some things I've learned about Protobuf as a new user of the technology, and how it might stack up to JSON (JavaScript Object Notation) in certain scenarios. My interest in this topic began a few weeks ago, when I began to brainstorm methods to speed up a Java backend service that responds in JSON to transfer data to other business units. While I also have interest in the security implications of switching to Protobuf, the focus of this particular post will be on performance.
 
-The usage of JSON in APIs is quite ubiquitous, and for good reason. It's generally lighter than XML, it's human readable, the object is in JavaScript (the most widely written programming language at the current time), and pretty much any software developer can learn to work with it due to its simplicity. And if you're working with JSON in a backend that isn't written in Node.js there are many high quality, open-source libraries to help marshall/unmarshall your data into a localized object. 
+The usage of JSON in APIs is ubiquitous, and for good reason. It's generally lighter than XML, it's human readable, the object is in JavaScript (the most widely written programming language at the current time), and pretty much any software developer can learn to work with it due to its simplicity. And if you're working with JSON in a backend that isn't written in Node.js there are many high quality, open-source libraries to help marshall/unmarshall your data into a localized object. 
 
 But are there any drawbacks?
 
 Yes, and there are certaintly counterarguments to be made to favor XML over JSON, but the whole 'XML versus JSON' thing is a very heated debate and goes outside the scope of this post. For more on that topic, maybe see [this link](https://blog.securityevaluators.com/xml-vs-json-security-risks-22e5320cf529).
 
-I want to talk about Protobuf, which offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll look at a Java environment.
+I want to talk about Protobuf, which offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll be looking at a Java 8 environment run on my Mac.
 
 #### So what is this "Protobuf" thing, anyway?
 
@@ -23,13 +23,15 @@ Protocol buffers are a new serialization format for cross-language communication
 
 So putting it in my own words, it's a mechanism to serialize and deserialize objects using a very efficient binary format that doesn't seem to waste much space, and can be sent immediately as an octet-stream through HTTP or through some other mechanism. Using both a template file and the language-specific [compiler tools](https://github.com/google/protobuf/releases) provided by Google, you can easily generate the classes necessary to create or unmarshall a Protobuf-encoded byte stream representing an object filled with data.
 
-So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app, is no problem with Protobuf. As long as the correct template is used, the applications should know how to decode the incoming bytes into a working object.
+So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app, is no problem with Protobuf. As long as the correct template is used, the applications should know how to decode the incoming bytes into a useful object containing the right data.
 
 So how do we create these Protobuf templates?
 
-Protobuf templates are files that end with a ".proto" extension, and aren't too dissimilar from .xml or .json files in that they are universal and human readable. Here's an example of a .proto file that defines a message to be sent:
+Protobuf templates are files that end with a ".proto" extension, and aren't too dissimilar from .xml or .json files in that they are universal and human readable. Here's an simple example of a .proto file that defines a message to be sent:
 
 ```
+syntax = "proto2";
+
 message Customer {
   optional string first_name = 1;
   optional string last_name = 2;
@@ -38,9 +40,7 @@ message Customer {
 }
 ```
 
-The snake_cased property names are assigned to integers which represent "fields" that all have to be unique. Also notice that each defined property has a rule (optional/required) as well as a data type. I haven't worked with all the data types available in Protobuf yet, but just having those explicit definitions feels good.
-
-It also appears that in proto3 syntax, you can easily implement hash maps into your .proto files which I find incredibly powerful.
+The snake_cased property names are assigned to integers which represent "fields" that all have to be unique. Also notice that each defined property has a rule (optional/required) as well as a data type. I haven't worked with all the data types available in Protobuf yet, but just having those explicit definitions saves us a lot of trouble.
 
 #### Setting up a test environment
 
