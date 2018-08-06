@@ -121,9 +121,9 @@ We see more than twice the size here, at 106 bytes.
 [123, 34, 105, 100, 34, 58, 52, 51, 50, 49, 44, 34, 110, 97, 109, 101, 34, 58, 34, 74, 111, 104, 110, 32, 68, 111, 101, 34, 44, 34, 101, 109, 97, 105, 108, 34, 58, 34, 106, 111, 104, 110, 100, 111, 101, 64, 101, 120, 97, 109, 112, 108, 101, 46, 99, 111, 109, 34, 44, 34, 112, 104, 111, 110, 101, 115, 34, 58, 91, 123, 34, 110, 117, 109, 98, 101, 114, 34, 58, 34, 53, 53, 53, 45, 52, 51, 50, 49, 34, 44, 34, 116, 121, 112, 101, 34, 58, 34, 72, 79, 77, 69, 34, 125, 93, 125]
 ```
 
-I found this size difference quite surprising, given that the generated Protobuf class is is nearly 2,000 lines of Java while our conventional PersonModel and the Number class used inside of it accumulate to ~100 lines of code. It's clear that Google's Protobuf classes have a very efficient way to express the data contained within the object when converting to bytes.
+I found this size difference quite surprising, given that the generated Protobuf class is coded in nearly 2,000 lines of Java while our conventional PersonModel combined with an additional Number class are written in only ~100 lines of code. It's clear that Google's Protobuf classes have a very efficient way to express the data contained within the object when converting to bytes.
 
-So now that the objects are constructed, and we see the difference in size, let's see how quickly the serialization/deserialization happens in each method.
+So now that the objects are constructed, and we see the difference in size, let's see how quickly the serialization/deserialization process happens with each method.
 
 #### The Results
 
