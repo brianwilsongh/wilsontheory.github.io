@@ -23,7 +23,7 @@ Protocol buffers are a new serialization format for cross-language communication
 
 So putting it in my own words, it's a mechanism to serialize and deserialize objects using a very efficient binary format that doesn't seem to waste much space, and can be sent immediately as an octet-stream through HTTP or through some other mechanism. Using both a template file and the language-specific [compiler tools](https://github.com/google/protobuf/releases) provided by Google, you can easily generate the classes necessary to create or unmarshall a Protobuf-encoded byte stream representing an object filled with data.
 
-So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app, is no problem with Protobuf. As long as the correct template is used, the applications should know how to decode the incoming bytes into a useful object containing the right data.
+So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app, is no problem with Protobuf. As long as the correct template is used, the applications should know how to decode the incoming bytes into the object you want.
 
 So how do we create these Protobuf templates?
 
@@ -202,7 +202,7 @@ But the conclusion for this very specific setup is pretty simple. It appears tha
 
 In general, I'm impressed with Protobuf and find it a very interesting alternative to XML and JSON. When I have some more time I plan to test the relative performance of this serialization format with larger objects, to find an accurate way to include network latency into the test, and to include XML in these benchmark tests as well.
 
-If you want to run the experiment from above on your own, tweak it, or improve it, please [feel free](https://github.com/wilsontheory/deserialization_experiment).
+If you want to run the experiment from above on your own, tweak it, or improve it, please [feel free](https://github.com/wilsontheory/deserialization_experiment). If you found any errors or issues with this post, please [let me know](mailto:brian.l.wilson@protonmail.com). See you again!
 
 
 
