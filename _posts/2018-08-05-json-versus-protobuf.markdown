@@ -7,13 +7,7 @@ categories: protobuf
 
 Today I'll discuss some things I've learned about Protobuf as a new user of the technology, and how it might stack up to JSON (JavaScript Object Notation) in certain scenarios. My interest in this topic began a few weeks ago, when I began to brainstorm methods to speed up a Java backend service that responds in JSON to transfer data to other business units. While I also have interest in the security implications of switching to Protobuf, the focus of this particular post will be on performance.
 
-The usage of JSON in APIs is ubiquitous, and for good reason. It's generally lighter than XML, it's human readable, the object is in JavaScript (the most widely written programming language at the current time), and pretty much any software developer can learn to work with it due to its simplicity. And if you're working with JSON in a backend that isn't written in Node.js there are many high quality, open-source libraries to help marshall/unmarshall your data into a localized object. 
-
-But are there any drawbacks?
-
-Yes, and there are certaintly counterarguments to be made to favor XML over JSON, but the whole 'XML versus JSON' thing is a very heated debate and goes outside the scope of this post. For more on that topic, maybe see [this link](https://blog.securityevaluators.com/xml-vs-json-security-risks-22e5320cf529).
-
-I want to talk about Protobuf, which offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll be looking at a Java 8 environment run on my Mac.
+From what I've seen thus far, Protobuf offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll be looking at a Java 8 environment run on my Mac.
 
 #### So what is this "Protobuf" thing, anyway?
 
@@ -191,8 +185,7 @@ Naturally, there's variance with the timing each time you run the program, but I
 
 But the conclusion for this very specific setup is pretty simple. It appears that Protobuf is better, at least in terms of runtime performance. But here are some reasons it might not be worth it to utilize this technology in a production codebase:
 
-* your API services are fast enough
-* the bottleneck to the performance of your APIs lies elsewhere in the code
+* your API services are fast enough or the bottleneck to the performance of your APIs lies elsewhere in the code
 * you or your team don't have the capacity to switch
 * you have automated components of your system that utilize JSON format
 * you have JSON validation that would be difficult to refactor
