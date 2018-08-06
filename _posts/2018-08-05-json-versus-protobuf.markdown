@@ -11,9 +11,9 @@ The usage of JSON in APIs is quite ubiquitous, and for good reason. It's general
 
 But are there any drawbacks?
 
-Yes, and there are many counterarguments to be made to favor XML over JSON, but the whole 'XML versus JSON' thing is a very heated debate and goes outside the scope of this post. For more on that topic, see [this link](https://blog.securityevaluators.com/xml-vs-json-security-risks-22e5320cf529).
+Yes, and there are certaintly counterarguments to be made to favor XML over JSON, but the whole 'XML versus JSON' thing is a very heated debate and goes outside the scope of this post. For more on that topic, maybe see [this link](https://blog.securityevaluators.com/xml-vs-json-security-risks-22e5320cf529).
 
-I want to talk about Protobuf, which offers at least two distinct advantages over JSON -- explicitly defined data types, and superior performance within certain environments. For the purposes of this post, we'll look at a Java environment.
+I want to talk about Protobuf, which offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll look at a Java environment.
 
 #### So what is this "Protobuf" thing, anyway?
 
@@ -38,13 +38,13 @@ message Customer {
 }
 ```
 
-The snake_cased property names are assigned to integers which represent "fields" that all have to be unique. Also notice that each defined property has a rule (optional/required) as well as a data type. I haven't worked with all the data types available in Protobuf yet, but it's already a step up from JSON in my book due to the exacting way in which everything is specified.
+The snake_cased property names are assigned to integers which represent "fields" that all have to be unique. Also notice that each defined property has a rule (optional/required) as well as a data type. I haven't worked with all the data types available in Protobuf yet, but just having those explicit definitions feels good.
 
 It also appears that in proto3 syntax, you can easily implement hash maps into your .proto files which I find incredibly powerful.
 
 #### Setting up a test environment
 
-An experiment was designed to test two different forms of an "Person" class in Java, which only contains a few attributes and an inner list of phone number objects that hold an enum as one of the properties.
+I wrote an experimental program to test two different forms of an "Person" class in Java, which only contains a few attributes and an inner list of phone number objects that hold an enum as one of the properties.
 
 So to begin the process with Protobuff, we run Google's "protoc" compiler against the following .proto template which is written by hand:
 
