@@ -15,7 +15,7 @@ Yes, and there are many counterarguments to be made to favor XML over JSON, but 
 
 I want to talk about Protobuf, which offers at least two distinct advantages over JSON -- explicitly defined data types, and superior performance in certain environments. For the purposes of this post, we'll only look at Java.
 
-##### So what is this "Protobuf" thing, anyway?
+#### So what is this "Protobuf" thing, anyway?
 
 Protocol buffers are a new serialization format for cross-language communication open-sourced by Google only a few years ago. At time of writing Protobuf is supported in C++, Java, C#, Python, JavaScript, Objective-C, Ruby, and PHP.
 
@@ -38,7 +38,7 @@ message Customer {
 
 The snake_case property names are assigned to integers which represent fields that have to be unique. Also notice that defined property has a rule (optional/required) as well as a data type. I haven't worked with all the data types available in Protobuf, but it's already a big step up from JSON where data types have to be implied.
 
-##### The Setup
+#### The Setup
 
 This experiment was designed to test two different forms of an "Person" class in Java, which only contains a few attributes and an inner list of phone number objects that contain an enum.
 
@@ -124,6 +124,8 @@ We see more than twice the size here, at 106 bytes.
 I found this size difference quite surprising, given that the generated Protobuf class is is nearly 2,000 lines of Java while our conventional PersonModel and the Number class used inside of it accumulate to ~100 lines of code. It's clear that Google's Protobuf classes have a very efficient way to express the data contained within the object when converting to bytes.
 
 So now that the objects are constructed, and we see the difference in size, let's see how quickly the serialization/deserialization happens in each method.
+
+#### The Results
 
 To measure the speed of execution of each method, I set up a simple demonstration where both methods would be tested a predetermined number of times (by the TEST_ITERATIONS constant, set to 1000 in my application) in sequence within a single thread. In each iteration, the objects are turned into their serialized formats (byte array for Protobuf and String for JSON), and subsequently consumed by helper methods that deserialize the object and retrieve a property from it -- in this case the email address of the person.
 
