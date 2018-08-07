@@ -7,7 +7,7 @@ categories: protobuf
 
 Today I'll discuss some things I've learned about Protobuf as a new user of the technology, and how it might stack up to JSON (JavaScript Object Notation) in certain scenarios. My interest in this topic began a few weeks ago, when I began to brainstorm methods to speed up a Java backend service that responds in JSON to transfer data to other business units. While I also have interest in the security implications of switching to Protobuf, the focus of this particular post will be on performance.
 
-From what I've seen thus far, Protobuf offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll be looking at a Java 8 environment run on my Mac.
+From what I've seen thus far, Protobuf offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll be looking at a Java 1.8 environment run on my Mac.
 
 #### So what is this "Protobuf" thing, anyway?
 
@@ -17,7 +17,7 @@ Protocol buffers are a new serialization format for cross-language communication
 
 So putting it in my own words at my current level of understanding, it's a mechanism to serialize and deserialize objects using a very efficient binary format that doesn't seem to waste much space, and can be sent immediately as an octet-stream through HTTP or through some other mechanism. Using both a template file and the language-specific [compiler tools](https://github.com/google/protobuf/releases) provided by Google, you can easily generate the classes necessary to create or unmarshall a Protobuf-encoded byte stream representing an object filled with data.
 
-So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app (why?), is relatively straightforward using Protobuf. As long as the correct template is used, the planets will align and your applications should know how to decode the incoming bytes into the exact object you want. Hypothetically.
+So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app (but why?), is relatively straightforward using Protobuf. As long as the correct template is used, the planets will align and your applications should know how to decode the incoming bytes into the exact object you want. Hypothetically.
 
 So how do we create these Protobuf templates?
 
@@ -38,7 +38,7 @@ The snake_cased property names are assigned to integers which represent "fields"
 
 #### Setting up a test environment
 
-I wrote a crudle little experimental program to test two different forms of an "Person" class in Java, which only contains a few attributes and an inner list of phone number objects that hold an enum as one of the properties.
+I wrote a crude little experimental program to test two different forms of an "Person" class in Java, which only contains a few attributes and an inner list of phone number objects that hold an enum as one of the properties.
 
 So to begin the process with Protobuff, we run Google's "protoc" compiler against the following .proto template which is written by hand:
 
@@ -186,12 +186,11 @@ Naturally, there's variance with the timing each time you run the program, but I
 But the conclusion for this very specific setup is pretty simple. It appears that Protobuf is better, at least in terms of runtime performance. But here are some reasons it might not be worth it to utilize this technology in a production codebase:
 
 * your API services are fast enough, or the bottleneck is found in another area of code
-* you or your team don't have the capacity to switch
-* you have automated components of your system that rely on JSON format
-* you have JSON validation that would be difficult to refactor
+* you or your team don't have the capacity to switch over
+* you have irreplacable components that rely on JSON format
 * you use MEAN stack and enjoy the convenience of having JavaScript everywhere
-* JSON is arguably more battle-tested, and easier to debug due to wealth of resources
-* Unknown potential issues with Protobuf
+* JSON is arguably more battle-tested, and easier to work with due to availability of resources
+* Unknown potential issues/exploits with Protobuf
 
 In general, I'm impressed with Protobuf and find it a very interesting alternative to XML and JSON. When I have some more time I plan to test the relative performance of this serialization format with larger objects, to find an accurate way to include network latency into the test, and to include XML in these benchmark tests as well. It's also hard to say whether background processes, such as my music-playing Chrome window, could have distorted the results in some way, so please don't take these data too seriously.
 
