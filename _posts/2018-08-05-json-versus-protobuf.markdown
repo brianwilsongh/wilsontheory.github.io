@@ -5,7 +5,9 @@ date:   2018-08-05 15:40:56
 categories: protobuf
 ---
 
-Today I'll discuss some things I've learned about Protobuf as a new user of the technology, and how it might stack up to JSON (JavaScript Object Notation) in certain scenarios. My interest in this topic began a few weeks ago, when I began to brainstorm methods to speed up a Java backend service that responds in JSON to transfer data to other business units. While I also have interest in the security implications of switching to Protobuf, the focus of this particular post will be on performance.
+Today I'll discuss some things I've learned about Protobuf as a new user of the technology, and how it might stack up to JSON (JavaScript Object Notation) in certain scenarios. My interest in this topic began a few weeks ago, when I began to brainstorm methods to speed up a Java backend service that responds in JSON to transfer data to other business units. 
+
+While I also have interest in the security implications of switching to Protobuf, the focus of this particular post will be on performance.
 
 From what I've seen thus far, Protobuf offers at least two distinct advantages over JSON in my book: nice and explicitly defined data types on fields, and superior performance within certain environments. For the purposes of this post, we'll be looking at a Java 1.8 environment run on my Mac.
 
@@ -15,9 +17,9 @@ Protocol buffers are a new serialization format for cross-language communication
 
 >Protocol buffers are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data – think XML, but smaller, faster, and simpler. You define how you want your data to be structured once, then you can use special generated source code to easily write and read your structured data to and from a variety of data streams and using a variety of languages. ([src](https://developers.google.com/protocol-buffers/))
 
-So putting it in my own words at my current level of understanding, it's a mechanism to serialize and deserialize objects using a very efficient binary format that doesn't seem to waste much space, and can be sent immediately as an octet-stream through HTTP or through some other mechanism. Using both a template file and the language-specific [compiler tools](https://github.com/google/protobuf/releases) provided by Google, you can easily generate the classes necessary to create or unmarshall a Protobuf-encoded byte stream representing an object filled with data.
+So putting it in my own words at my current level of understanding, it's a mechanism to serialize and deserialize objects from a variety of programming languages using a very efficient binary format, and can be sent immediately as an octet-stream through HTTP or through some other mechanism. Using both a template file and the language-specific [compiler tools](https://github.com/google/protobuf/releases) provided by Google, you can easily generate the classes necessary to marshall or unmarshall a Protobuf-encoded byte stream representing an object filled with data.
 
-So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app (but why?), is relatively straightforward using Protobuf. As long as the correct template is used, the planets will align and your applications should know how to decode the incoming bytes into the exact object you want. Hypothetically.
+So as is the case with JSON, sending a Protobuf message from a Java app to a Python app, then to a Ruby app, then to a PHP app (but why?), is relatively straightforward using Protobuf. As long as the correct template is used, the planets will align and your applications should know how to decode the incoming bytes into the exact object you want. At least in theory.
 
 So how do we create these Protobuf templates?
 
@@ -118,7 +120,7 @@ We see more than twice the size here, at 106 bytes.
 [123, 34, 105, 100, 34, 58, 52, 51, 50, 49, 44, 34, 110, 97, 109, 101, 34, 58, 34, 74, 111, 104, 110, 32, 68, 111, 101, 34, 44, 34, 101, 109, 97, 105, 108, 34, 58, 34, 106, 111, 104, 110, 100, 111, 101, 64, 101, 120, 97, 109, 112, 108, 101, 46, 99, 111, 109, 34, 44, 34, 112, 104, 111, 110, 101, 115, 34, 58, 91, 123, 34, 110, 117, 109, 98, 101, 114, 34, 58, 34, 53, 53, 53, 45, 52, 51, 50, 49, 34, 44, 34, 116, 121, 112, 101, 34, 58, 34, 72, 79, 77, 69, 34, 125, 93, 125]
 ```
 
-I found the magnitude of this size difference quite surprising at first, given that the generated Protobuf class for "Person" is coded in nearly 2,000 lines of Java while our conventional PersonModel combined with an additional Number class are written in only ~100 lines of code. There is documentation released on how Google encodes all that information into those bytes, but I haven't had a chance to read it yet. It looks very efficient.
+I found the magnitude of this size difference quite surprising at first, given that the generated Protobuf class for "Person" is coded in nearly 2,000 lines of Java while our conventional PersonModel combined with an additional Number class are written in only ~100 lines of code. There is documentation released on how Google encodes all that information into those bytes, but I haven't had a chance to read it yet.
 
 So now that the objects are constructed, and now that we see the sheer difference in their size, let's see how quickly the Java Virtual Machine can marshall and unmarshall these People instances.
 
@@ -192,7 +194,9 @@ But the conclusion for this very specific setup is pretty simple. It appears tha
 * JSON is arguably more battle-tested, and easier to work with due to availability of resources
 * Unknown potential issues/exploits with Protobuf
 
-In general, I'm impressed with Protobuf and find it a very interesting alternative to XML and JSON. When I have some more time I plan to test the relative performance of this serialization format with larger objects, to find an accurate way to include network latency into the test, and to include XML in these benchmark tests as well. It's also hard to say whether background processes, such as my music-playing Chrome window, could have distorted the results in some way, so please don't take these data too seriously.
+In general, I'm impressed with Protobuf and find it a very interesting alternative to XML and JSON. When I have some more time I plan to test the relative performance of this serialization format with larger objects, to find an accurate way to include network latency into the test, and to include XML in these benchmark tests as well. 
+
+It's also hard to say whether background processes, such as my music-playing Chrome window, could have distorted the results in some way, so please don't take these data too seriously.
 
 If you want to run the experiment from above on your own, tweak it, or improve it, please [feel free](https://github.com/wilsontheory/deserialization_experiment). If you found any errors or issues with this post, please [let me know](mailto:brian.l.wilson@protonmail.com). See you again!
 
