@@ -106,9 +106,9 @@ So if multithreading was straightforward, what would you expect as the output to
 213
 352
 ```
-Not only are the numbers out of order, but some runs of the program do not even return five digits as an output. In those cases, it's clear that calls to mutableThing.append(seedNumber) are failing. The exact reason goes beyond of the scope of this post, but we can at least determine here that StringBuilder doesn't have a mechanism to operate properly when one instance of it is being used between multiple threads. In threading terminology, it's "not thread-safe".
+Not only are the numbers out of order, but some runs of the program do not even return five digits as an output. In those cases, it's clear that calls to mutableThing.append(seedNumber) are failing as was mentioned earlier. From this we can empirically demonstrate that StringBuilder doesn't have a mechanism to handle concurrent modification in multiple threads. In threading terminology, we'd say that StringBuilder is *not* "thread-safe".
 
-Note that without the computational "noise" added in the .run() method of ObjectAlterationThread the results can still be incomplete and/or out of order, albeit less common in my test runs.
+And note that without the computational "noise" added in the .run() method of ObjectAlterationThread the results can still be incomplete and/or out of order, albeit less common in my test runs. And while there is an official thread-safe version of StringBuilder in Java named *StringBuffer*, we'll see by the end of the post that even thread-safe classes will not save us from issues.
 
 #### Static Methods in Multiple Threads
 
