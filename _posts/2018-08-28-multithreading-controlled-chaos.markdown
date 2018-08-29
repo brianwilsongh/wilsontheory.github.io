@@ -5,15 +5,15 @@ date:   2018-08-28 15:40:56
 categories: multithreading
 ---
 
-The demise of [Moore's Law](https://en.wikipedia.org/wiki/Moore%27s_law) over the last decade or so has created a great necessity for the art of multithreading. Multithreading allows for multiple processes to be run on the collective pool of computing power offered by one or more cores.
+The demise of [Moore's Law](https://en.wikipedia.org/wiki/Moore%27s_law) over the last decade or so has created great necessity for developers who are experienced in the art of multithreading. Multithreading allows for multiple processes to be run on the collective pool of computing power offered by one or more cores.
 
 For an everyday analogy, imagine if you had the ability to make copies of yourself. One you could go to work, the other could clean the house, one could walk the dog, and one could mow the grass. If you coordinate the multiple copies of yourself properly, you can massively increase the productivity of your life. But without coordination, the results would probably not be so good. Perhaps two copies of yourself would get into a fight to use the stove at the same time, and maybe they'd accidentally light the kitchen on fire as a result.
 
-It's *even worse* in programming, because, it's *very* easy to create a multithreaded program that produces abnormal results. This can result in some very nasty and subtle bugs that may find their way into the final version of your product. For organizations that simply cannot afford to make mistakes, like financial institutions, this is clearly unacceptable.
+It's *even worse* in programming, because, it's *very* easy to create a multithreaded program that produces anomalous results. This can result in some very nasty and subtle bugs that may find their way into the final version of your product, remaining undetected for weeks or maybe even years. For organizations that simply cannot afford to make mistakes, such as financial institutions, this is clearly unacceptable.
 
 So let's see an example of how miscoordination between threads can produce disastrous results. On a side note, the rest of the article will assume familiarity with basic Java syntax. I'll try my best to explain the more esoteric parts, but it might also be helpful to see [outside resources](http://tutorials.jenkov.com/java-concurrency/creating-and-starting-threads.html).
 
-So here is the main method of an application:
+Here is the main method of an small application I wrote to test some basic concepts of multithreading in *Java 1.6 SE*:
 
 ```java
 package io.github.wilsontheory;
