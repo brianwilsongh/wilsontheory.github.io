@@ -89,9 +89,11 @@ In the main program, after the five threads are constructed, the .start() method
 
 The constructor of each ObjectAlterationThread takes a reference to our mutable object (a StringBuilder in this case), an integer seed number to keep track of the sequential order in which these threads are run in the actual program, and a reference to the CountDownLatch which is used to wait for all the threads to finish before we reach the call to System.out.println() in the main program.
 
-When .start() is called on each of the threads, the Runnable object (in this case, an instance of ObjectAlterationThread), has .run() called on it. To produce a little bit of computational load in each of the threads, I have a 100 millisecond sleep timer and a little bit of module arithmetic performed in the .run() method. Once that's done. the seed number of that Thread is appended into the StringBuilder named *mutableThing*.
+When .start() is called on each of the threads, the Runnable object (in this case, an instance of ObjectAlterationThread), has .run() called on it. To produce a little bit of computational load in each of the threads, I have a 100 millisecond sleep timer and a little bit of modulus math performed in the .run() method. Once that's done. the seed number of that Thread is appended into the StringBuilder named *mutableThing*.
 
-Note that all five threads have references to the same StringBuilder object. Although each thread in Java has its own stack, they all share the same heap. StringBuilder, as an object, lives in the heap.
+Note that all five threads have references to the same StringBuilder object. Although each thread in Java has its own stack, they all share the same heap. StringBuilder, as an object, lives in the heap and is referenced by all of the threads in this example. The mistakes start to occur when concurrent calls to methods on that StringBuilder interfere with one another.
+
+The *exact* point of failure inside the mutable StringBuilder object is a more in-depth topic that goes outside the scope of this post, but may be a very interesting topic to explore in a future one.
 
 So if multithreading was straightforward, what would you expect as the output to this program?
 
