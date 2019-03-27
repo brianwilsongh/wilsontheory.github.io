@@ -59,7 +59,6 @@ Inside the lambda function, I wrote the following Python script to return the co
 ```python
 import json
 import boto3
-# import botocore
 
 def lambda_handler(event, context):
     result = None
@@ -147,4 +146,4 @@ So not only is Lambda going to be slower, but the performance speed will probabl
 
 While the cost efficiency of Lambda (and FaaS in general) is very attractive, I'm not sold on the serverless movement yet. Lambda does have many use cases (especially for heavy users of the AWS ecosystem), but doesn't seem solid enough to replace a true server for any type of web service that interacts directly with the people using it.
 
-Questions? Comments? Disagreement? Other input? Please [let me know](mailto:brian.l.wilson@protonmail.com). Sayonara!
+Questions? Comments? Please [let me know](mailto:brian.l.wilson@protonmail.com). Sayonara!
