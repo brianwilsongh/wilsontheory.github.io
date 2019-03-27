@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Initial Thoughts on Going Serverless with AWS Lambda"
+title:  "Initial Thoughts - Serverless Web Apps with AWS Lambda"
 date:   2019-03-26 17:40:56
 categories: lambdas
 ---
@@ -54,7 +54,7 @@ A simple use case: serve the customer with a static html page...
 
 I created a Lambda function *serveStatic*, a corresponding API Gateway construct to intercept HTTP requests to trigger *serveStatic*, and a bucket to host that HTML as a file named *index.html*
 
-Inside the lambda function, I wrote the following Python script to return the contents of that HTML file to the API Gateway as part of a JSON object.
+Inside the Lambda function, I wrote the following Python script to return the contents of that HTML file to the API Gateway as part of a JSON object.
 
 ```python
 import json
@@ -116,7 +116,7 @@ Waiting:       54   70  19.1     62     145
 Total:        282  336  40.3    328     487
 ```
 
-I did confirm that the results from amazon.com were similar to a number of other websites I frequent.
+*Note that I did confirm that the results from amazon.com were similar to a number of other websites I frequent.*
 
 So to interpret these results, we have to not only look at the total time it took to finish requests but at the individual components contributing to it.
 
@@ -133,17 +133,20 @@ Total time:
 
 The sum of the Connect and Processing times
 
-[src](https://stackoverflow.com/questions/2820306/definition-of-connect-processing-waiting-in-apache-bench)
 ```
+[source](https://stackoverflow.com/questions/2820306/definition-of-connect-processing-waiting-in-apache-bench)
 
-While it would be a lot better to compare the data from calling the Lambda function to that of a server sending the exact same HTML file, we can at least see in this scenario that the serverless architecture (Lambda) had to spend a lot more time processing the request before sending back a reply. 
 
-Also, the standard deviation in total response time for the serverless architecture was over four times larger than that of amazon.com. There was also a request that took 1721 seconds, while the longest request to amazon.com was 487 milliseconds. For a business trying to offer a service, 1.7 seconds could mean anything from a subpar customer experience to a lost sale.
+Probably the number one concern other than the statistically slower speed of the Lambda call is the huge variance in its overall performance. The standard deviation in total response time for the serverless architecture was over four times larger than that of amazon.com. There was also a request that took 1721 seconds, while the longest request to amazon.com was only 487 milliseconds.
 
-So not only is Lambda going to be slower, but the performance speed will probably be *much* less predictable than that of a dedicated server. However, it can be extremely cost-effective and it requires no configuration from the customer to be scalable.
+In short, the "worst case" scenario for amazon.com (in terms of loading speed) was still better than the typical case for the Lambda call. 
+
+For a business trying to offer a service, 1.7 seconds could mean anything from a subpar customer experience to a lost sale. The lack of control over Lambda's consistency limits a serverless architecture's ability to guarantee an approximate level of performance.
+
+And although it's hard to gauge the effects it would've had on the data, keep in mind that the HTML being returned by the amazon.com server is MUCH larger and more sophisticated than the simple static file being returned by Lambda. Had the Lambda been responsible for assembling a larger HTML file, it's possible the results could have been even slower and more varied!
 
 #### Takeaway
 
-While the cost efficiency of Lambda (and FaaS in general) is very attractive, I'm not sold on the serverless movement yet. Lambda does have many use cases (especially for heavy users of the AWS ecosystem), but doesn't seem solid enough to replace a true server for any type of web service that interacts directly with the people using it.
+While the cost efficiency of Lambda (and FaaS in general) is very attractive, I'm not sold on the idea of using serverless architecture for any sort of human-facing applications. Lambda does have many great use cases - especially for heavy users of the AWS ecosystem - but just doesn't have the predictability and performance to replace a tried-and-true system of load-balanced servers.
 
 Questions? Comments? Please [let me know](mailto:brian.l.wilson@protonmail.com). Sayonara!
